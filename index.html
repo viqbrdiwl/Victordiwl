@@ -1,0 +1,896 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁 Gift Surprise Message Creator</title>
+    <meta name="description" content="Create beautiful surprise messages with animated gifts! Share with friends and loved ones.">
+    <meta name="google-adsense-account" content="ca-pub-YOUR_ADSENSE_ID">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID" crossorigin="anonymous"></script>
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Dancing+Script:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #FF6B8B;
+            --secondary: #4ECDC4;
+            --accent: #FFD166;
+            --dark: #1A1A2E;
+            --light: #F5F7FA;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient2: linear-gradient(45deg, #FF416C, #FF4B2B);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Floating Background Elements */
+        .bg-element {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: 0;
+            animation: float 15s infinite linear;
+        }
+        
+        .bg-element:nth-child(1) { top: 10%; left: 5%; width: 300px; height: 300px; background: var(--primary); animation-delay: 0s; }
+        .bg-element:nth-child(2) { top: 60%; right: 5%; width: 200px; height: 200px; background: var(--secondary); animation-delay: 5s; }
+        .bg-element:nth-child(3) { bottom: 20%; left: 20%; width: 150px; height: 150px; background: var(--accent); animation-delay: 10s; }
+        
+        /* YouTube Videos Container */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.1;
+            filter: blur(8px);
+        }
+        
+        .yt-video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        
+        .yt-video.active {
+            opacity: 1;
+        }
+        
+        /* Main Container */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+        
+        .logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            background: var(--gradient2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 65, 108, 0.3);
+            animation: glow 2s infinite alternate;
+        }
+        
+        .tagline {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            background: rgba(255,255,255,0.1);
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Main Content */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 992px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Left Panel - Creation */
+        .creation-panel {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--accent);
+        }
+        
+        /* Name Input */
+        .name-input-container {
+            margin-bottom: 40px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+        
+        .name-input {
+            width: 100%;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(255,107,139,0.3);
+        }
+        
+        /* Sticker Selection */
+        .sticker-section {
+            margin-bottom: 40px;
+        }
+        
+        .sticker-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .sticker-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        .sticker-item {
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+            font-size: 2.5rem;
+        }
+        
+        .sticker-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: rgba(255,255,255,0.1);
+            border-color: var(--accent);
+        }
+        
+        .sticker-item.selected {
+            border-color: var(--primary);
+            background: rgba(255,107,139,0.1);
+            box-shadow: 0 0 20px rgba(255,107,139,0.3);
+        }
+        
+        /* Action Button */
+        .action-btn {
+            background: var(--gradient2);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 65, 108, 0.4);
+        }
+        
+        /* Right Panel - Preview */
+        .preview-panel {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 20px;
+        }
+        
+        .preview-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--secondary);
+        }
+        
+        .message-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sender-name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #FFD166, #FF9E6D);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .selected-sticker {
+            font-size: 8rem;
+            margin: 30px 0;
+            animation: bounce 2s infinite;
+        }
+        
+        .message-text {
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+        
+        /* Share Section */
+        .share-section {
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+        
+        .share-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--accent);
+        }
+        
+        .share-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .share-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+        
+        .share-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .share-btn:nth-child(1) { background: #25D366; }
+        .share-btn:nth-child(2) { background: #1877F2; }
+        .share-btn:nth-child(3) { background: #1DA1F2; }
+        .share-btn:nth-child(4) { background: #7289DA; }
+        
+        /* Ad Container */
+        .ad-container {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .ad-slot {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .developer {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(20px) rotate(240deg); }
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255,107,139,0.3); }
+            to { text-shadow: 0 0 40px rgba(255,107,139,0.6); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Decorative Elements */
+        .decoration {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.7;
+            z-index: 2;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo { font-size: 2.5rem; }
+            .content-wrapper { gap: 20px; }
+            .creation-panel, .preview-panel { padding: 25px; }
+            .panel-title { font-size: 1.8rem; }
+            .sender-name { font-size: 2.5rem; }
+            .selected-sticker { font-size: 5rem; }
+            .sticker-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    
+    <!-- YouTube Background Videos -->
+    <div class="video-container">
+        <iframe class="yt-video active" id="video1" width="100%" height="100%" src="https://www.youtube.com/embed/bYTsiVwFBfA?autoplay=1&mute=1&controls=0&loop=1&playlist=bYTsiVwFBfA&modestbranding=1&rel=0&disablekb=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <iframe class="yt-video" id="video2" width="100%" height="100%" src="https://www.youtube.com/embed/cyhJar00YFQ?autoplay=1&mute=1&controls=0&loop=1&playlist=cyhJar00YFQ&modestbranding=1&rel=0&disablekb=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <iframe class="yt-video" id="video3" width="100%" height="100%" src="https://www.youtube.com/embed/2LzyxJU-UQE?autoplay=1&mute=1&controls=0&loop=1&playlist=2LzyxJU-UQE&modestbranding=1&rel=0&disablekb=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+    
+    <!-- Decorative Floating Elements -->
+    <div class="decoration" style="top:10%; left:5%; color:#FF6B8B; animation-delay: 0s;">🎁</div>
+    <div class="decoration" style="top:20%; right:10%; color:#4ECDC4; animation-delay: 2s;">✨</div>
+    <div class="decoration" style="bottom:30%; left:15%; color:#FFD166; animation-delay: 4s;">💝</div>
+    <div class="decoration" style="bottom:20%; right:20%; color:#FF6B8B; animation-delay: 6s;">🎀</div>
+    
+    <div class="main-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo animate__animated animate__pulse animate__infinite">Surprise Gift Creator</h1>
+            <p class="tagline animate__animated animate__fadeIn">🎉 Create magical surprise messages with animated gifts! Select a sticker, add your name, and share the joy! ✨</p>
+        </header>
+        
+        <!-- Ad Slot 1 -->
+        <div class="ad-container">
+            <div class="ad-slot">
+                <!-- Replace with your AdSense code -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <!-- Left: Creation Panel -->
+            <div class="creation-panel animate__animated animate__fadeInLeft">
+                <h2 class="panel-title">🎨 Create Your Surprise</h2>
+                
+                <!-- Name Input -->
+                <div class="name-input-container">
+                    <label class="input-label">✏️ Your Name:</label>
+                    <input type="text" class="name-input" id="userName" placeholder="Enter your beautiful name..." maxlength="50">
+                </div>
+                
+                <!-- Sticker Selection -->
+                <div class="sticker-section">
+                    <label class="input-label">🎁 Choose Your Gift:</label>
+                    <div class="sticker-grid" id="stickerGrid">
+                        <!-- Stickers will be generated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Generate Button -->
+                <button class="action-btn" id="generateBtn">
+                    <i class="fas fa-magic"></i> Create Surprise Message
+                </button>
+                
+                <!-- Share Options -->
+                <div class="share-section">
+                    <h3 class="share-title">📤 Share Your Creation</h3>
+                    <div class="share-buttons">
+                        <button class="share-btn" onclick="shareOnWhatsApp()">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                        <button class="share-btn" onclick="shareOnFacebook()">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </button>
+                        <button class="share-btn" onclick="shareOnTwitter()">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </button>
+                        <button class="share-btn" onclick="shareOnInstagram()">
+                            <i class="fab fa-instagram"></i> Copy Link
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right: Preview Panel -->
+            <div class="preview-panel animate__animated animate__fadeInRight">
+                <h2 class="preview-title">🎯 Live Preview</h2>
+                
+                <div class="message-card" id="messageCard">
+                    <div class="sender-name" id="previewName">Your Name</div>
+                    <div class="selected-sticker" id="previewSticker">🎁</div>
+                    <div class="message-text">
+                        <p>✨ You've received a special gift! ✨</p>
+                        <p>May your day be filled with joy, laughter, and wonderful moments. This surprise comes straight from the heart!</p>
+                        <p>🎉 Spread the happiness and share with friends! 🎉</p>
+                    </div>
+                </div>
+                
+                <!-- Ad Slot 2 -->
+                <div class="ad-container">
+                    <div class="ad-slot">
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                             data-ad-slot="0987654321"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ad Slot 3 -->
+        <div class="ad-container">
+            <div class="ad-slot">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                     data-ad-slot="1122334455"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Made with ❤️ to spread joy and happiness</p>
+            <p class="developer">Developed by: Wamutu Victor</p>
+            <p style="opacity: 0.7; margin-top: 20px; font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> This site uses cookies and displays ads to support free message creation.
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // AdSense Publisher ID (Replace with your own)
+        const ADSENSE_ID = 'ca-pub-YOUR_ADSENSE_ID';
+        
+        // Sticker Database - Unlimited stickers!
+        const stickers = [
+            // Emoji Gifts
+            '🎁', '🎀', '🎊', '🎉', '🎈', '✨', '💝', '💌', '💖', '💐',
+            '🌸', '🌹', '🍭', '🍬', '🍫', '🍩', '🍦', '🎂', '🍰', '🧁',
+            
+            // Animated/Decorative
+            '🎄', '🕯️', '🌟', '⭐', '☀️', '🌈', '☁️', '🌙', '⚡', '🔥',
+            '💎', '🔮', '🎵', '🎶', '🎸', '🎺', '🎻', '🥁', '📯', '🎼',
+            
+            // Food & Drink
+            '🍎', '🍕', '🍔', '🌮', '🍣', '🍜', '🍩', '🍪', '🍮', '🍫',
+            '☕', '🍵', '🍷', '🍸', '🍹', '🥂', '🍾', '🥤', '🧃', '🧋',
+            
+            // Animals & Nature
+            '🐶', '🐱', '🐰', '🐻', '🐼', '🦊', '🐯', '🦁', '🐮', '🐷',
+            '🐸', '🐵', '🦄', '🐙', '🐬', '🐳', '🦋', '🐞', '🦉', '🦚',
+            
+            // Travel & Activities
+            '✈️', '🚀', '🚁', '⛵', '🚗', '🏍️', '🚲', '🎯', '🎮', '🎲',
+            '🧩', '🎨', '🖼️', '📸', '🎥', '🎬', '📚', '🎪', '🎠', '🎡',
+            
+            // Special & Seasonal
+            '🎅', '🤶', '🦌', '☃️', '⛄', '🦃', '🐣', '🐰', '🎃', '👻',
+            '🕷️', '🕸️', '💀', '👑', '🎭', '🦹', '🦸', '🧙', '🧚', '🧜',
+            
+            // Hearts & Love
+            '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💕',
+            '💞', '💓', '💗', '💖', '💘', '💟', '❣️', '💔', '❤️‍🔥', '❤️‍🩹',
+            
+            // More Fun Emojis
+            '😊', '😍', '🥰', '😘', '😻', '🤗', '🙌', '🎊', '🥳', '🤩',
+            '😎', '🤠', '🥸', '🧐', '🤓', '😇', '🤠', '🤑', '🤡', '👾',
+            
+            // Objects & Symbols
+            '📱', '💻', '⌚', '📷', '🎧', '🎤', '📺', '🎙️', '🧭', '🔭',
+            '💡', '🔦', '🕯️', '🧨', '🎆', '🎇', '🧧', '🎎', '🏮', '🎐',
+        ];
+        
+        // YouTube Video IDs for background
+        const videos = [
+            'bYTsiVwFBfA',
+            'cyhJar00YFQ', 
+            '2LzyxJU-UQE'
+        ];
+        
+        // Current selected sticker
+        let selectedSticker = '🎁';
+        let selectedStickerIndex = 0;
+        
+        // Initialize the page
+        function init() {
+            generateStickerGrid();
+            rotateBackgroundVideos();
+            loadFromURL();
+            createConfetti();
+            
+            // Event Listeners
+            document.getElementById('userName').addEventListener('input', updatePreview);
+            document.getElementById('generateBtn').addEventListener('click', generateMessage);
+            
+            // Initialize AdSense
+            if(window.adsbygoogle) {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            }
+        }
+        
+        // Generate sticker selection grid
+        function generateStickerGrid() {
+            const grid = document.getElementById('stickerGrid');
+            grid.innerHTML = '';
+            
+            stickers.forEach((sticker, index) => {
+                const item = document.createElement('div');
+                item.className = `sticker-item ${index === selectedStickerIndex ? 'selected' : ''}`;
+                item.innerHTML = sticker;
+                item.title = `Select ${sticker}`;
+                
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.sticker-item').forEach(el => el.classList.remove('selected'));
+                    item.classList.add('selected');
+                    selectedSticker = sticker;
+                    selectedStickerIndex = index;
+                    updatePreview();
+                    animateStickerSelection(item);
+                });
+                
+                grid.appendChild(item);
+            });
+        }
+        
+        // Rotate background YouTube videos
+        function rotateBackgroundVideos() {
+            let currentVideo = 0;
+            const videoElements = document.querySelectorAll('.yt-video');
+            
+            setInterval(() => {
+                videoElements.forEach(video => video.classList.remove('active'));
+                videoElements[currentVideo].classList.add('active');
+                currentVideo = (currentVideo + 1) % videoElements.length;
+            }, 15000); // Change every 15 seconds
+        }
+        
+        // Update preview in real-time
+        function updatePreview() {
+            const name = document.getElementById('userName').value || 'Your Name';
+            document.getElementById('previewName').textContent = name;
+            document.getElementById('previewSticker').innerHTML = selectedSticker;
+            
+            // Add animation to sticker
+            const stickerEl = document.getElementById('previewSticker');
+            stickerEl.style.animation = 'none';
+            setTimeout(() => {
+                stickerEl.style.animation = 'bounce 2s infinite';
+            }, 10);
+        }
+        
+        // Generate and share message
+        function generateMessage() {
+            const name = document.getElementById('userName').value.trim();
+            
+            if(!name) {
+                alert('Please enter your name first! ✨');
+                document.getElementById('userName').focus();
+                return;
+            }
+            
+            // Update URL with parameters
+            const params = new URLSearchParams({
+                name: encodeURIComponent(name),
+                sticker: selectedStickerIndex,
+                from: 'surprise'
+            });
+            
+            const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+            
+            // Update page title
+            document.title = `${name} sent you a surprise gift! 🎁`;
+            
+            // Update preview
+            updatePreview();
+            
+            // Show success message
+            showSuccessMessage(name);
+            
+            // Create shareable link
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                console.log('Link copied to clipboard:', shareUrl);
+            });
+            
+            // Trigger confetti
+            triggerConfetti();
+            
+            // Scroll to preview
+            document.querySelector('.preview-panel').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+        
+        // Load data from URL parameters
+        function loadFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('name');
+            const stickerIndex = params.get('sticker');
+            
+            if(name) {
+                document.getElementById('userName').value = decodeURIComponent(name);
+            }
+            
+            if(stickerIndex !== null && stickers[stickerIndex]) {
+                selectedStickerIndex = parseInt(stickerIndex);
+                selectedSticker = stickers[selectedStickerIndex];
+                
+                // Update sticker selection
+                const items = document.querySelectorAll('.sticker-item');
+                items.forEach((item, index) => {
+                    item.classList.toggle('selected', index === selectedStickerIndex);
+                });
+            }
+            
+            updatePreview();
+        }
+        
+        // Share functions
+        function shareOnWhatsApp() {
+            const name = document.getElementById('userName').value || 'Someone';
+            const text = `${name} sent you a surprise gift message! 🎁\n\nCheck it out: ${window.location.href}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+        
+        function shareOnFacebook() {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank');
+        }
+        
+        function shareOnTwitter() {
+            const text = "I created a surprise gift message! 🎁 Check it out!";
+            window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
+        }
+        
+        function shareOnInstagram() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('📋 Link copied to clipboard! Paste it in your Instagram story or post.');
+            });
+        }
+        
+        // Animation functions
+        function animateStickerSelection(element) {
+            element.style.transform = 'scale(1.2)';
+            element.style.transition = 'transform 0.3s';
+            
+            setTimeout(() => {
+                element.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        function showSuccessMessage(name) {
+            // Create floating success message
+            const success = document.createElement('div');
+            success.innerHTML = `🎉 Surprise created for ${name}!`;
+            success.style.position = 'fixed';
+            success.style.top = '20px';
+            success.style.left = '50%';
+            success.style.transform = 'translateX(-50%)';
+            success.style.background = 'var(--gradient2)';
+            success.style.color = 'white';
+            success.style.padding = '15px 30px';
+            success.style.borderRadius = '50px';
+            success.style.zIndex = '10000';
+            success.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+            success.style.animation = 'fadeIn 0.5s';
+            
+            document.body.appendChild(success);
+            
+            setTimeout(() => {
+                success.style.animation = 'fadeOut 0.5s';
+                setTimeout(() => success.remove(), 500);
+            }, 3000);
+        }
+        
+        function createConfetti() {
+            const colors = ['#FF6B8B', '#4ECDC4', '#FFD166', '#667eea', '#764ba2'];
+            
+            for(let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = confetti.style.width;
+                document.body.appendChild(confetti);
+            }
+        }
+        
+        function triggerConfetti() {
+            const confettiElements = document.querySelectorAll('.confetti');
+            
+            confettiElements.forEach((confetti, index) => {
+                setTimeout(() => {
+                    confetti.style.opacity = '1';
+                    confetti.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`;
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.transition = `all ${Math.random() * 2 + 1}s cubic-bezier(0.1, 0.8, 0.2, 1)`;
+                    
+                    setTimeout(() => {
+                        confetti.style.opacity = '0';
+                        confetti.style.transform = 'translateY(-10px)';
+                        setTimeout(() => {
+                            confetti.style.transition = 'none';
+                            confetti.style.transform = 'translateY(-10px)';
+                        }, 1000);
+                    }, 2000);
+                }, index * 20);
+            });
+        }
+        
+        // Auto-refresh ads
+        setInterval(() => {
+            if(window.adsbygoogle && adsbygoogle.length) {
+                try {
+                    adsbygoogle.forEach(ad => ad.refresh());
+                } catch(e) {
+                    console.log('Error refreshing ads');
+                }
+            }
+        }, 60000); // Refresh every minute
+        
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', init);
+        
+        // Add CSS for fade animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateX(-50%) translateY(0); }
+                to { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            }
+            
+            .yt-video {
+                transition: opacity 2s ease-in-out;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
